@@ -1,0 +1,27 @@
+<div class="details">
+  <div class="icon">🎤</div>
+
+  <div class="body">
+    <h3>Détail de la conférence</h3>
+
+    @if (conference(); as conf) {
+      <p class="badge">Conférence sélectionnée depuis la liste.</p>
+
+      <p><strong>Titre :</strong> {{ conf.title }}</p>
+      <p><strong>Description :</strong> {{ conf.description }}</p>
+      <p><strong>Lieu :</strong> {{ conf.place }}</p>
+      <p><strong>Date :</strong> {{ conf.date | date: 'yyyy-MM-dd' }}</p>
+      <p><strong>Places disponibles :</strong> {{ remainingPlaces(conf) }}</p>
+
+      <button
+        class="btn"
+        [disabled]="remainingPlaces(conf) === 0"
+        (click)="registered.emit(conf)"
+      >
+        S'inscrire
+      </button>
+    } @else {
+      <p class="placeholder">Aucune conférence sélectionnée.</p>
+    }
+  </div>
+</div>

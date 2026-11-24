@@ -3,7 +3,7 @@
     <div class="icon">📅</div>
     <div>
       <h2>Liste des conférences à venir</h2>
-      <p class="subtitle">Recherchez une conférence et inscrivez-vous.</p>
+      <p class="subtitle">Cliquez sur une conférence pour afficher ses détails.</p>
     </div>
   </div>
 
@@ -19,7 +19,11 @@
 
     <div class="grid">
       @for (conf of filteredConferences; track conf.id) {
-        <article class="conf-card">
+        <article
+          class="conf-card"
+          [class.selected]="conf === selectedConference"
+          (click)="select(conf)"
+        >
           <h3>{{ conf.title | uppercase }}</h3>
           <p><strong>Date :</strong> {{ conf.date | date: 'dd/MM/yyyy' }}</p>
           <p><strong>Lieu :</strong> {{ conf.place }}</p>
@@ -33,7 +37,7 @@
               'btn-red': remainingPlaces(conf) === 0
             }"
             [disabled]="remainingPlaces(conf) === 0"
-            (click)="register(conf)"
+            (click)="register(conf); $event.stopPropagation()"
           >
             S'inscrire
           </button>
@@ -42,5 +46,11 @@
         <p class="empty">Aucune conférence ne correspond à votre recherche.</p>
       }
     </div>
+
+    <!-- composant imbriqué : le parent envoie la conférence choisie à l'enfant -->
+    <app-confdetails
+      [conference]="selectedConference"
+      (closed)="closeDetails()"
+    />
   }
 </section>
